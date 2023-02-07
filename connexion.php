@@ -1,8 +1,50 @@
 <?php
 session_start();
-require_once('./php/caps.php');
+require_once ('./php/user.php');
+require_once('./php/utilitaire.php');
+$pwd = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+$error ="";
 
-$products = selectAllProduct();
+
+if(isset($_POST['inscriptionButton'])){
+
+    if($username!="" && $pwd!="" && $pwd2!="" && $email!=""){
+
+        if(checkIfEmailExist($email) ==null){
+
+        
+            if($pwd == $pwd2){
+                
+                $options = [
+                    'cost' => 10,
+                ];
+                //* hash le mot de passe en BCRYPT 
+                $hashPassword = password_hash($pwd, PASSWORD_BCRYPT, $options);
+
+                if(registerUser($username, $email, $hashPassword)){
+                    
+                    $_SESSION['username'] = $username;
+                    $_SESSION['email'] = $email;
+                    $_SESSION['connected'] = true;
+                    header('Location: index.php');
+                    exit;
+                }
+                
+            }else{
+                $error = "Les deux mot de passe ne sont pas semblable";
+            }
+
+        }else{
+            $error = "Cet email est déjà utiliser";
+        }
+        
+
+    }else{
+        $error = "Vous n'avez pas renseigner tout les champ";
+    }
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -25,11 +67,11 @@ $products = selectAllProduct();
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#">CapShop</a>
+                <a class="navbar-brand" href="./index.php">CapShop</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Accueil</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="./index.php">Accueil</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">A propos</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -41,17 +83,8 @@ $products = selectAllProduct();
                             </ul>
                         </li>
                     </ul>
-                    <?php if(isset($_SESSION['username'])){ ?>
-                        
-                        <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./deconnexion.php">Se déconnecter</a></div>
-                        <?php
-
-                        }else{
-                            ?>
-                            <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./inscription.php">S'inscrire / Se connecter</a></div>
-
-                            <?php
-                        }?>
+                    
+                    <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./inscription.php">S'inscrire / Se connecter</a></div>
                     <h2> | </h2>
                     <form class="d-flex" style="margin-left:2%;">
                         <button class="btn btn-outline-dark" type="submit">
@@ -76,42 +109,20 @@ $products = selectAllProduct();
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <?php
-                    foreach ($products as $product) {
-                        $price = $product['price'];
-                        $quantity = $product['quantity'];
-                        $brand = $product['brand'];
-                        $model = $product['model'];
-                        $description = $product['description'];
-                        $image = $product['image'];
-                    ?>
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="./img/<?=$image?>" alt="..." width=100% height=35%/>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder"><?=$model?></h5>
-                                    <!-- Product price-->
-                                    
-                                    <?=$brand?>
-                                    <br>
-                                    <?="$".$price?>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Voir le produit</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php
-
-                    }
                     
-                    ?>
+                    <form action="#" method="post">
+                        <label for="email">Email :</label>
+                        <br>
+                        <input type="email" name="email" id="email" placeholder="dupont@email.com" value="<?=$email?>">
+                        <br>
+                        <label for="password">Mot de passe :</label>
+                        <br>
+                        <input type="password" name="password" id="password" placeholder="********">
+                        <p style="color:red;"> <?=$error?> </p>
+                        <button type="submit" name="inscriptionButton" class="btn btn-outline-dark mt-auto" style="width:100%;">Se connecter</button>
+                        
+                        <p>Tu n'a pas de compte ? <a href="./insciption.php">S'inscrire</a></p>
+                    </form>
                     
                 </div>
             </div>
@@ -122,7 +133,6 @@ $products = selectAllProduct();
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
         
     </body>
 </html>
