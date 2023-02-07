@@ -7,42 +7,32 @@ $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $error ="";
 
 
-if(isset($_POST['inscriptionButton'])){
+if(isset($_POST['connexion'])){
 
-    if($username!="" && $pwd!="" && $pwd2!="" && $email!=""){
+    if($pwd!="" && $email!=""){
 
-        if(checkIfEmailExist($email) ==null){
+
+        $result = connexionCheck($email, $pwd);
 
         
-            if($pwd == $pwd2){
-                
-                $options = [
-                    'cost' => 10,
-                ];
-                //* hash le mot de passe en BCRYPT 
-                $hashPassword = password_hash($pwd, PASSWORD_BCRYPT, $options);
+        
+        if(password_verify($pwd,$result['password'])){
 
-                if(registerUser($username, $email, $hashPassword)){
-                    
-                    $_SESSION['username'] = $username;
-                    $_SESSION['email'] = $email;
-                    $_SESSION['connected'] = true;
-                    header('Location: index.php');
-                    exit;
-                }
-                
-            }else{
-                $error = "Les deux mot de passe ne sont pas semblable";
-            }
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
+            $_SESSION['connected'] = true;
+            header('Location: index.php');
+            exit;
 
         }else{
-            $error = "Cet email est déjà utiliser";
+            $error="Le mail ou le mot de passe n'est pas bon";
         }
-        
 
     }else{
-        $error = "Vous n'avez pas renseigner tout les champ";
+        $error = "Tout les champs ne sont pas renseigner";
     }
+
+        
 }
 
 
@@ -119,7 +109,7 @@ if(isset($_POST['inscriptionButton'])){
                         <br>
                         <input type="password" name="password" id="password" placeholder="********">
                         <p style="color:red;"> <?=$error?> </p>
-                        <button type="submit" name="inscriptionButton" class="btn btn-outline-dark mt-auto" style="width:100%;">Se connecter</button>
+                        <button type="submit" name="connexion" class="btn btn-outline-dark mt-auto" style="width:100%;">Se connecter</button>
                         
                         <p>Tu n'a pas de compte ? <a href="./insciption.php">S'inscrire</a></p>
                     </form>

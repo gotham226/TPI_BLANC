@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once ('./php/user.php');
 require_once('./php/utilitaire.php');
@@ -8,6 +9,10 @@ $pwd2 = filter_input(INPUT_POST, 'password2', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
 $error ="";
+
+if(isset($_SESSION['username'])){
+    header("Location: index.php");
+}
 
 
 if(isset($_POST['inscriptionButton'])){
