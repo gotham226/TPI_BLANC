@@ -30,3 +30,12 @@ function connexionCheck($email, $pwd){
     ];
     return dbRun($sql, $data)->fetch(PDO::FETCH_ASSOC);
 }
+
+function takeUsernameByEmail($email){
+
+    $sql = "SELECT username FROM users WHERE email = ?";
+    $data = [
+        $email
+    ];
+    return dbRun($sql, $data)->fetch(PDO::FETCH_ASSOC);
+}

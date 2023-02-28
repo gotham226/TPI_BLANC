@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once ('./php/user.php');
 require_once('./php/utilitaire.php');
@@ -18,7 +19,7 @@ if(isset($_POST['connexion'])){
         
         if(password_verify($pwd,$result['password'])){
 
-            $_SESSION['username'] = $username;
+            $_SESSION['username'] = takeUsernameByEmail($email)['username'];
             $_SESSION['email'] = $email;
             $_SESSION['connected'] = true;
             header('Location: index.php');
