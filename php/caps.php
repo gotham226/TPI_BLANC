@@ -28,9 +28,11 @@ function selectAllProductByPrice(){
 }
 
 function SelectProductLike($search){
-    $sql = "SELECT * FROM caps WHERE model LIKE '%$search%'";
-    
-    return dbRun($sql)->fetchAll(PDO::FETCH_ASSOC);
+    $sql = "SELECT * FROM caps WHERE model LIKE ?";
+    $data = [
+        "%$search%",
+    ];
+    return dbRun($sql, $data)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function SelectProductById($idCap){
@@ -40,6 +42,7 @@ function SelectProductById($idCap){
     ];
     return dbRun($sql, $data)->fetch(PDO::FETCH_ASSOC);
 }
+
 function SelectProductLikeBrand($search){
     $sql = "SELECT * FROM caps WHERE brand LIKE '%$search%'";
     

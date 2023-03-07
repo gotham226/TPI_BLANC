@@ -2,8 +2,23 @@
 session_start();
 
 require_once('./php/caps.php');
+require_once('./php/panier.php');
 $cap = SelectProductById($_GET['idCap']);
 $products = SelectProductLikeBrand($cap['brand']);
+
+$quantity = filter_input(INPUT_POST, 'quantity', FILTER_DEFAULT);
+
+if(isset($_POST['submit'])){
+    if($quantity != 0 && $quantity !=null){
+        $idCap = $cap['id_cap'];
+        
+        ajoutDansLePanier($idCap, $quantity);
+    }
+
+}
+
+
+
 ?>
 
 
@@ -25,41 +40,10 @@ $products = SelectProductLikeBrand($cap['brand']);
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="index.php">CapShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item" ><a class="nav-link active" aria-current="page" href="index.php">Accueil</a></li>
-                    </ul>
-
-                    <?php if(isset($_SESSION['username'])){ ?>
-                        
-                        <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./deconnexion.php">Se déconnecter</a></div>
-                        
-                        <?php
-
-                        }else{
-                            ?>
-                            <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./inscription.php">S'inscrire / Se connecter</a></div>
-                            
-
-                            <?php
-                        }?>
-                    <h2> | </h2>
-                    
-                    <form class="d-flex"  style="margin-left: 2%;">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
-                    
-                </div>
-            </div>
-        </nav>
+        <?php
+            require_once('./php/nav.php');
+        
+        ?>
         <!-- Product section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 my-5">
@@ -73,11 +57,13 @@ $products = SelectProductLikeBrand($cap['brand']);
                         </div>
                         <p class="lead"><?=$cap['description']?></p>
                         <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                <i class="bi-cart-fill me-1"></i>
-                                Add to cart
-                            </button>
+                            <form action="#" method="post">
+                                <input name="quantity" class="form-control text-center me-3" id="inputQuantity" type="number" value="1" style="max-width: 4rem" />
+                                <button type="submit" name="submit" class="btn btn-outline-dark flex-shrink-0" type="button">
+                                    <i class="bi-cart-fill me-1"></i>
+                                    Add to cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

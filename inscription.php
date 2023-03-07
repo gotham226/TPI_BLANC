@@ -12,6 +12,7 @@ $error ="";
 
 if(isset($_SESSION['username'])){
     header("Location: index.php");
+    exit;
 }
 
 
@@ -19,39 +20,62 @@ if(isset($_POST['inscriptionButton'])){
 
     if($username!="" && $pwd!="" && $pwd2!="" && $email!=""){
 
-        if(checkIfEmailExist($email) ==null){
-
-        
-            if($pwd == $pwd2){
+        if(checkIfEmailExist($email) !=null && takeUsernameByEmail($email)['actif'] == 0){
+                if($pwd == $pwd2){
                 
-                $options = [
-                    'cost' => 10,
-                ];
-                //* hash le mot de passe en BCRYPT 
-                $hashPassword = password_hash($pwd, PASSWORD_BCRYPT, $options);
-
-                if(registerUser($username, $email, $hashPassword)){
+                    $options = [
+                        'cost' => 10,
+                    ];
+                    //* hash le mot de passe en BCRYPT 
+                    $hashPassword = password_hash($pwd, PASSWORD_BCRYPT, $options);
+    
+                    if(updateUser($hashPassword, $email, 1, $username)){
+                        
+                        $_SESSION['username'] = $username;
+                        $_SESSION['email'] = $email;
+                        $_SESSION['connected'] = true;
+                        $_SESSION['id_user'] = takeUsernameByEmail($email)['id_user'];
+                        header('Location: index.php');
+                        exit;
+                    }
                     
-                    $_SESSION['username'] = $username;
-                    $_SESSION['email'] = $email;
-                    $_SESSION['connected'] = true;
-                    header('Location: index.php');
-                    exit;
+                }else{
+                    $error = "Les deux mot de passe ne sont pas semblable";
                 }
-                
             }else{
-                $error = "Les deux mot de passe ne sont pas semblable";
-            }
-
-        }else{
-            $error = "Cet email est déjà utiliser";
-        }
+                if(checkIfEmailExist($email) ==null){
+                    if($pwd == $pwd2){
+                    
+                        $options = [
+                            'cost' => 10,
+                        ];
+                        //* hash le mot de passe en BCRYPT 
+                        $hashPassword = password_hash($pwd, PASSWORD_BCRYPT, $options);
         
+                        if(registerUser($username, $email, $hashPassword)){
+                            
+                            $_SESSION['username'] = $username;
+                            $_SESSION['email'] = $email;
+                            $_SESSION['connected'] = true;
+                            $_SESSION['id_user'] = takeUsernameByEmail($email)['id_user'];
+                            header('Location: index.php');
+                            exit;
+                        }
+                        
+                    }else{
+                        $error = "Les deux mot de passe ne sont pas semblable";
+                    }
+                }else{
+                    $error = "Cet email est déjà utilisée";
+                }
+        }
+    
 
     }else{
         $error = "Vous n'avez pas renseigner tout les champ";
     }
 }
+
 
 
 ?>
@@ -73,37 +97,10 @@ if(isset($_POST['inscriptionButton'])){
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="./index.php">CapShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="./index.php">Accueil</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">A propos</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    
-                    <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="#">S'inscrire / Se connecter</a></div>
-                    <h2> | </h2>
-                    <form class="d-flex" style="margin-left:2%;">
-                        <button class="btn btn-outline-dark" type="submit">
-                            <i class="bi-cart-fill me-1"></i>
-                            Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        <?php
+            require_once('./php/nav.php');
+        
+        ?>
         <!-- Header-->
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">

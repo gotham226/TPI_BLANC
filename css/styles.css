@@ -3452,6 +3452,16 @@ textarea.form-control-lg {
   background-color: #212529;
   border-color: #212529;
 }
+.btn-outline-red {
+  color: black;
+  background-color: white;
+}
+.btn-outline-red:hover {
+  color: #fff;
+  background-color: red;
+  border-color: #212529;
+}
+
 .btn-check:focus + .btn-outline-dark, .btn-outline-dark:focus {
   box-shadow: 0 0 0 0.25rem rgba(33, 37, 41, 0.5);
 }
@@ -11371,3 +11381,45 @@ width: 100%;
 .search:valid a {
 display: block;
 }
+
+
+@media (min-width: 1025px) {
+  .h-custom {
+  height: 100vh !important;
+  }
+  }
+  
+  .card-registration .select-input.form-control[readonly]:not([disabled]) {
+  font-size: 1rem;
+  line-height: 2.15;
+  padding-left: .75em;
+  padding-right: .75em;
+  }
+  
+  .card-registration .select-arrow {
+  top: 13px;
+  }
+  
+  .bg-grey {
+  background-color: white;
+  }
+  
+  @media (min-width: 992px) {
+  .card-registration-2 .bg-grey {
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  }
+  }
+  
+  @media (max-width: 991px) {
+  .card-registration-2 .bg-grey {
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  }
+  }
+
+  #btnDeconnexion:hover{
+    background-color: red;
+  }
+
+  

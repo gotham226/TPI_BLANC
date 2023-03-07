@@ -33,9 +33,44 @@ function connexionCheck($email, $pwd){
 
 function takeUsernameByEmail($email){
 
-    $sql = "SELECT username FROM users WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE email = ?";
     $data = [
         $email
     ];
     return dbRun($sql, $data)->fetch(PDO::FETCH_ASSOC);
+}
+
+function RemplacePassword($hashPassword, $idUser){
+    $sql = "UPDATE users SET password = ? WHERE id_user = ?";
+
+    $data=[
+        $hashPassword,
+        $idUser
+    ];
+    
+    dbRun($sql, $data);
+}
+
+function setInactiveUser($idUser){
+    $sql = "UPDATE users SET actif = ? WHERE id_user = ?";
+
+    $data=[
+        0,
+        $idUser
+    ];
+    
+    dbRun($sql, $data);
+}
+
+function updateUser($pwd, $email, $actif, $username){
+    $sql = "UPDATE users SET actif = ?, username = ?, password = ? WHERE email = ?";
+
+    $data=[
+        $actif,
+        $username,
+        $pwd,
+        $email
+    ];
+    
+    return dbRun($sql, $data);
 }
