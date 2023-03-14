@@ -1,3 +1,5 @@
+<?php
+?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="index.php" >CapShop</a>
@@ -6,6 +8,12 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item" ><a class="nav-link active" aria-current="page" href="index.php">Accueil</a></li>
                         <li class="nav-item" ><a class="nav-link active" aria-current="page" href="profil.php">Profil</a></li>
+                        <?php
+                        if(isset($_SESSION['admin']) && $_SESSION['admin'] == true){
+                            echo "<li class=\"nav-item\" ><a class=\"nav-link active\" aria-current=\"page\" href=\"commandeAdmin.php\">Gestion commande</a></li>";
+                        }
+                        
+                        ?>
                     </ul>
 
                     <?php if(isset($_SESSION['username'])){ ?>
@@ -13,7 +21,7 @@
                         <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./deconnexion.php">Se déconnecter</a></div>
                         
                         <?php
-
+                        
                         }else{
                             ?>
                             <div class="text-center" style="margin-right: 2%;"><a class="btn btn-outline-dark mt-auto" href="./inscription.php">S'inscrire / Se connecter</a></div>

@@ -66,3 +66,10 @@ function TakeOrderById($idOrder){
     ];
     return dbRun($sql, $data)->fetchAll(PDO::FETCH_ASSOC);
 }
+
+function TakeAllOrders(){
+    $sql = "SELECT * FROM orders";
+    $data = [
+    ];
+    return dbRun($sql, $data)->fetchAll(PDO::FETCH_ASSOC);
+}

@@ -11422,4 +11422,9 @@ display: block;
     background-color: red;
   }
 
-  
+.imgFavoris:hover{
+    transform: scale(1.5);
+}
+.imgFavoris{
+  transition: transform .2s; /* Animation */
+}

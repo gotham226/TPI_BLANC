@@ -24,6 +24,13 @@ if(isset($_POST['connexion'])){
                     $_SESSION['username'] = $user['username'];
                     $_SESSION['id_user'] = $user['id_user'];
                     $_SESSION['email'] = $email;
+                    
+                    if($user['admin'] == 1){
+                        $_SESSION['admin'] = true;
+                    }else{
+                        $_SESSION['admin'] = false;
+                    }
+
                     $_SESSION['connected'] = true;
                     header('Location: index.php');
                     exit;
