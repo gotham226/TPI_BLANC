@@ -27,10 +27,8 @@ if(isset($_POST['ajouter'])){
             
             // Test si le fichier est bien une image
             if($typeMedia=="image/png" || $typeMedia=="image/jpeg" || $typeMedia=="image/jpg"){
-                var_dump($_FILES['fichier']['size']);
                 $dateDuPost = date( "Y-m-d H:i:s");
                 $nomImage = $_FILES['fichier']['name'][0].$dateDuPost.".".$extensionsFichier;
-                var_dump($_POST);
                 $message = AddProduct($nomImage, $model, $marque, $description, $prix, $quantity, $_FILES['fichier']);
 
             }else{

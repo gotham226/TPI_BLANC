@@ -225,8 +225,7 @@ function DeleteCap($idCap){
         $idCap
     ];
 
-    $idsOrder = dbRun($sql, $data)->fetchAll(PDO::FETCH_ASSOC);
-    var_dump($idsOrder);
+    $idsOrders = dbRun($sql, $data)->fetch(PDO::FETCH_ASSOC);
     
     $sql = "DELETE FROM order_caps WHERE id_cap = ?";
     $data = [
@@ -241,12 +240,11 @@ function DeleteCap($idCap){
     ];
     dbRun($sql, $data); 
 
-    foreach($idsOrder as $idOrder){
+    foreach($idsOrders as $idOrder){
         $sql = "DELETE FROM orders WHERE id_order = ?";
         $data = [
             $idOrder
         ];
-        var_dump($idOrder);
 
         dbRun($sql, $data); 
     }
@@ -254,3 +252,18 @@ function DeleteCap($idCap){
 
 }
 
+function DeleteOrderById($idOrder){
+    $sql = "DELETE FROM order_caps WHERE id_order = ?";
+    $data = [
+        $idOrder,
+    ];
+
+    dbRun($sql, $data); 
+
+    $sql = "DELETE FROM orders WHERE id_order = ?";
+        $data = [
+            $idOrder
+        ];
+
+        dbRun($sql, $data); 
+}

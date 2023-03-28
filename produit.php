@@ -58,7 +58,6 @@ $products = SelectProductLikeBrand($cap['brand']);
 if(isset($_POST['submit'])){
     if($quantity != 0 && $quantity !=null){
         $idCap = $cap['id_cap'];
-        var_dump("asdasd");
         ajoutDansLePanier($idCap, $quantity);
     }
 
@@ -92,7 +91,7 @@ if(isset($_POST['submit'])){
         <?php
             require_once('./php/nav.php');
 
-            if(isset($_SESSION['admin']) == true){
+            if(isset($_SESSION['admin']) && $_SESSION['admin'] == true ){
                 ?>
 
                 <section class="py-5">

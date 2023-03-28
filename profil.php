@@ -114,9 +114,12 @@ if(isset($_POST['submit'])){
                                 echo "<span style=\"color:red;margin-left:44%;\">$message</span>";
                             }
                         
+                            if($orders != null){
+
                         
                         ?>
                 <h1 style="margin-left:40%;">Historique des commandes </h1>
+                <?php } ?>
                 <br>
                 <?php
                     foreach($orders as $order){

@@ -6,7 +6,7 @@ require_once('./php/utilitaire.php');
 require_once('./php/panier.php');
 require_once('./php/caps.php');
 
-if(!isset($_SESSION['username'])){
+if(!isset($_SESSION['admin'])){
     header("Location: index.php");
     exit;
 }
@@ -47,7 +47,6 @@ $orders = TakeAllOrders();
         </header>
         <!-- Section-->
         <section class="py-5">
-        <h3 style="margin-left: 45%;">Modifier profil</h3>
             <div class="container px-4 px-lg-5 mt-5" style="margin-bottom:5%;">
             
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -62,9 +61,13 @@ $orders = TakeAllOrders();
                                 echo "<span style=\"color:red;margin-left:44%;\">$message</span>";
                             }
                         
+                        if($orders != null){
+
                         
                         ?>
+                        
                 <h1 style="margin-left:40%;">Toutes les commandes du site </h1>
+                <?php } ?>
                 <br>
                 <?php
                     foreach($orders as $order){
@@ -142,11 +145,17 @@ $orders = TakeAllOrders();
                                 <!-- Product name-->
                                 <h5 class="fw-bolder"></h5>
                                 <!-- Product price-->
+                        </div>
+                        <p style="margin-left: 47%;">
+                        <?php
+                        
+                            echo "<a href=\"deleteOrder.php?idOrder=$idOrder\"> <button  style=\" color: red; background-color: #0a78df00; border: none;\"  class=\"material-icons button delete\">delete</button> </a></div>";
                                 
-                    </div>
-
+                        ?>  
+                        </p>
                 </div>
                 <?php
+                
                 }
                 
                 

@@ -11,6 +11,7 @@
                         <?php
                         if(isset($_SESSION['admin']) && $_SESSION['admin'] == true){
                             echo "<li class=\"nav-item\" ><a class=\"nav-link active\" aria-current=\"page\" href=\"commandeAdmin.php\">Gestion commande</a></li>";
+                            echo "<li class=\"nav-item\" ><a class=\"nav-link active\" aria-current=\"page\" href=\"userAdmin.php\">Gestion des utilisateurs</a></li>";
                         }
                         
                         ?>
